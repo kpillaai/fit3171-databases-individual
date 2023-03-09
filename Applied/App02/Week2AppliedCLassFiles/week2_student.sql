@@ -2,9 +2,9 @@
 Databases Week 2 Applied
 week2_student.sql
 
-student id:
-student name:
-last modified date:
+student id: 31500153
+student name: Krishna Pillaai Manogaran
+last modified date: 9/03/2023
 
 */
 
