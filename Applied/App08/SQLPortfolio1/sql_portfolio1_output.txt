@@ -1,0 +1,105 @@
+SQL> 
+SQL> --****PLEASE ENTER YOUR DETAILS BELOW****
+SQL> --sql_portfolio1.sql
+SQL> 
+SQL> --Student ID: 31500153
+SQL> --Student Name: Krishna Pillaai Manogaran
+SQL> --Unit Code: FIT3171
+SQL> --Applied Class No:
+SQL> 
+SQL> 
+SQL> /*Task 1: CREATE table POLICY and non FK constraints*/
+SQL> CREATE TABLE policy (
+  2      policy_id           NUMBER(7) NOT NULL,
+  3      prop_no             NUMBER(4) NOT NULL,
+  4      policy_startdate    DATE NOT NULL,
+  5      policy_type_code    CHAR(1) NOT NULL,
+  6      policy_length       NUMBER(3) NOT NULL,
+  7      insurer_code        CHAR(3) NOT NULL
+  8  );
+
+Table POLICY created.
+
+SQL> ALTER TABLE policy ADD CONSTRAINT policy_pk PRIMARY KEY (policy_id);
+
+Table POLICY altered.
+
+SQL> ALTER TABLE policy ADD CONSTRAINT policy_legnth_min_6_months CHECK (policy_length >= 6);
+
+Table POLICY altered.
+
+SQL> 
+SQL> COMMENT ON COLUMN policy.policy_id IS 'Policy unique identifier';
+
+Comment created.
+
+SQL> COMMENT ON COLUMN policy.prop_no IS 'Property unique identifier';
+
+Comment created.
+
+SQL> COMMENT ON COLUMN policy.policy_startdate IS 'Policy start date';
+
+Comment created.
+
+SQL> COMMENT ON COLUMN policy.policy_type_code IS 'Policy type unique identifier';
+
+Comment created.
+
+SQL> COMMENT ON COLUMN policy.policy_length IS 'Length of the policy in months (minimum 6 months long)';
+
+Comment created.
+
+SQL> COMMENT ON COLUMN policy.insurer_code IS 'Insurance company unique identifier';
+
+Comment created.
+
+SQL> 
+SQL> 
+SQL> /*Task 1: Add FK constraints*/
+SQL> ALTER TABLE policy
+  2      ADD 
+  3          (CONSTRAINT property_policy_fk FOREIGN KEY (prop_no) REFERENCES property (prop_no), 
+  4          CONSTRAINT policy_type_policy_fk FOREIGN KEY (policy_type_code) REFERENCES policy_type (policy_type_code),
+  5          CONSTRAINT insurer_policy_fk FOREIGN KEY (insurer_code) REFERENCES insurer (insurer_code),
+  6          CONSTRAINT policy_uq UNIQUE (prop_no, policy_startdate, policy_type_code));
+
+Table POLICY altered.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> /*Task 2*/
+SQL> INSERT INTO policy VALUES(policy_seq.nextval, 7145, to_date('21 Apr 2023', 'dd Mon yyyy'), 'B', 12, 'LAS');
+
+1 row inserted.
+
+SQL> INSERT INTO policy VALUES(policy_seq.nextval, 9346, to_date('21 Apr 2023', 'dd Mon yyyy'), 'B', 12, 'LAS');
+
+1 row inserted.
+
+SQL> 
+SQL> 
+SQL> /*Task 3*/
+SQL> UPDATE policy SET policy_length = policy_length + 6 WHERE policy_id = 1;
+
+1 row updated.
+
+SQL> INSERT INTO policy VALUES(policy_seq.nextval, 7145, to_date('01 May 2023', 'dd Mon yyyy'), 'C', 12, 'LAS');
+
+1 row inserted.
+
+SQL> 
+SQL> 
+SQL> /*Task 4*/
+SQL> UPDATE policy SET policy_length = policy_length - 6 WHERE policy_id = 1;
+
+1 row updated.
+
+SQL> DELETE FROM policy WHERE UPPER(policy_type_code) = 'C' and policy.prop_no = 7145;
+
+1 row deleted.
+
+SQL> 
+SQL> 
+SQL> --Comment out SET ECHO and SPOOL commands before submitting your portfolio
+SQL> SPOOL OFF
