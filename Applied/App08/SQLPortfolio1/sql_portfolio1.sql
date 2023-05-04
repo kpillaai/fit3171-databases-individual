@@ -8,7 +8,7 @@
 --Student ID: 31500153
 --Student Name: Krishna Pillaai Manogaran
 --Unit Code: FIT3171
---Applied Class No:
+--Applied Class No: 3
 
 
 /*Task 1: CREATE table POLICY and non FK constraints*/
