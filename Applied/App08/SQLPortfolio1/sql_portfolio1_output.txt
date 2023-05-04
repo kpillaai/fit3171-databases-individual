@@ -18,38 +18,16 @@ SQL> CREATE TABLE policy (
   7      insurer_code        CHAR(3) NOT NULL
   8  );
 
-Error starting at line : 15 in command -
-CREATE TABLE policy (
-    policy_id           NUMBER(7) NOT NULL,
-    prop_no             NUMBER(4) NOT NULL,
-    policy_startdate    DATE NOT NULL,
-    policy_type_code    CHAR(1) NOT NULL,
-    policy_length       NUMBER(3) NOT NULL,
-    insurer_code        CHAR(3) NOT NULL
-)
-Error report -
-ORA-00955: name is already used by an existing object
-00955. 00000 -  "name is already used by an existing object"
-*Cause:    
-*Action:
+Table POLICY created.
+
 SQL> ALTER TABLE policy ADD CONSTRAINT policy_pk PRIMARY KEY (policy_id);
 
-Error starting at line : 23 in command -
-ALTER TABLE policy ADD CONSTRAINT policy_pk PRIMARY KEY (policy_id)
-Error report -
-ORA-02260: table can have only one primary key
-02260. 00000 -  "table can have only one primary key"
-*Cause:    Self-evident.
-*Action:   Remove the extra primary key.
+Table POLICY altered.
+
 SQL> ALTER TABLE policy ADD CONSTRAINT policy_legnth_min_6_months CHECK (policy_length >= 6);
 
-Error starting at line : 24 in command -
-ALTER TABLE policy ADD CONSTRAINT policy_legnth_min_6_months CHECK (policy_length >= 6)
-Error report -
-ORA-02264: name already used by an existing constraint
-02264. 00000 -  "name already used by an existing constraint"
-*Cause:    The specified constraint name has to be unique.
-*Action:   Specify a unique constraint name for the constraint.
+Table POLICY altered.
+
 SQL> 
 SQL> COMMENT ON COLUMN policy.policy_id IS 'Policy unique identifier';
 
@@ -85,35 +63,19 @@ SQL> ALTER TABLE policy
   5          CONSTRAINT insurer_policy_fk FOREIGN KEY (insurer_code) REFERENCES insurer (insurer_code),
   6          CONSTRAINT policy_uq UNIQUE (prop_no, policy_startdate, policy_type_code));
 
-Error starting at line : 35 in command -
-ALTER TABLE policy
-    ADD 
-        (CONSTRAINT property_policy_fk FOREIGN KEY (prop_no) REFERENCES property (prop_no), 
-        CONSTRAINT policy_type_policy_fk FOREIGN KEY (policy_type_code) REFERENCES policy_type (policy_type_code),
-        CONSTRAINT insurer_policy_fk FOREIGN KEY (insurer_code) REFERENCES insurer (insurer_code),
-        CONSTRAINT policy_uq UNIQUE (prop_no, policy_startdate, policy_type_code))
-Error report -
-ORA-02275: such a referential constraint already exists in the table
-02275. 00000 -  "such a referential constraint already exists in the table"
-*Cause:    Self-evident.
-*Action:   Remove the extra constraint.
+Table POLICY altered.
+
 SQL> 
 SQL> 
 SQL> 
 SQL> /*Task 2*/
 SQL> INSERT INTO policy VALUES(policy_seq.nextval, 7145, to_date('21 Apr 2023', 'dd Mon yyyy'), 'B', 12, 'LAS');
 
-Error starting at line : 45 in command -
-INSERT INTO policy VALUES(policy_seq.nextval, 7145, to_date('21 Apr 2023', 'dd Mon yyyy'), 'B', 12, 'LAS')
-Error report -
-ORA-00001: unique constraint (KMAN0030.POLICY_UQ) violated
+1 row inserted.
 
 SQL> INSERT INTO policy VALUES(policy_seq.nextval, 9346, to_date('21 Apr 2023', 'dd Mon yyyy'), 'B', 12, 'LAS');
 
-Error starting at line : 46 in command -
-INSERT INTO policy VALUES(policy_seq.nextval, 9346, to_date('21 Apr 2023', 'dd Mon yyyy'), 'B', 12, 'LAS')
-Error report -
-ORA-00001: unique constraint (KMAN0030.POLICY_UQ) violated
+1 row inserted.
 
 SQL> 
 SQL> 
