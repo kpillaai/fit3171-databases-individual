@@ -1,0 +1,221 @@
+SQL> 
+SQL> --****PLEASE ENTER YOUR DETAILS BELOW****
+SQL> --sql_portfolio2_basic_intermediate.sql
+SQL> 
+SQL> --Student ID: 31500153
+SQL> --Student Name: Krishna Pillaai Manogaran
+SQL> --Unit Code: FIT3171
+SQL> --Applied Class No: 3
+SQL> 
+SQL> 
+SQL> /*1*/
+SQL> -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
+SQL> -- ENSURE that your query is formatted and has a semicolon
+SQL> -- (;) at the end of this answer
+SQL> -- HOW TO PUT OWNER NAME TOGETHER
+SQL> -- MAINTANENCE DATE AND TIME
+SQL> SELECT
+  2      maint_id, maint_datetime, prop_address, owner_givname, owner_famname, maint_desc, maint_cost
+  3  FROM
+  4      rent.property NATURAL JOIN rent.maintenance, rent.owner
+  5  WHERE
+  6      maint_cost BETWEEN 1000 AND 3000 AND maint_assigned = 'Y'
+  7  ORDER BY
+  8      maint_cost DESC, maint_datetime;
+
+  MAINT_ID MAINT_DAT PROP_ADDRESS                                                                     OWNER_GIVNAME        OWNER_FAMNAME        MAINT_DESC                                         MAINT_COST
+---------- --------- -------------------------------------------------------------------------------- -------------------- -------------------- -------------------------------------------------- ----------
+         1 06/DEC/19 22 Benjamin Track, Suite 722, 8157, Koelpinmouth, Australian Capital Territory   Lilian               Potter               Painting interior walls, 100m2                           3000
+         1 06/DEC/19 22 Benjamin Track, Suite 722, 8157, Koelpinmouth, Australian Capital Territory   Geoffrey             Berth                Painting interior walls, 100m2                           3000
+         1 06/DEC/19 22 Benjamin Track, Suite 722, 8157, Koelpinmouth, Australian Capital Territory   Joela                Boshers              Painting interior walls, 100m2                           3000
+         1 06/DEC/19 22 Benjamin Track, Suite 722, 8157, Koelpinmouth, Australian Capital Territory   Jasun                Clitsome             Painting interior walls, 100m2                           3000
+         1 06/DEC/19 22 Benjamin Track, Suite 722, 8157, Koelpinmouth, Australian Capital Territory   Ronald               Meere                Painting interior walls, 100m2                           3000
+         1 06/DEC/19 22 Benjamin Track, Suite 722, 8157, Koelpinmouth, Australian Capital Territory   Ludovika             Wiggins              Painting interior walls, 100m2                           3000
+         9 07/OCT/22 284 Princes Highway, Unit 1, 6856, South Annashire, Victoria                     Ronald               Meere                Front door lock replacement                              1275
+         9 07/OCT/22 284 Princes Highway, Unit 1, 6856, South Annashire, Victoria                     Ludovika             Wiggins              Front door lock replacement                              1275
+         9 07/OCT/22 284 Princes Highway, Unit 1, 6856, South Annashire, Victoria                     Jasun                Clitsome             Front door lock replacement                              1275
+         9 07/OCT/22 284 Princes Highway, Unit 1, 6856, South Annashire, Victoria                     Joela                Boshers              Front door lock replacement                              1275
+         9 07/OCT/22 284 Princes Highway, Unit 1, 6856, South Annashire, Victoria                     Geoffrey             Berth                Front door lock replacement                              1275
+
+  MAINT_ID MAINT_DAT PROP_ADDRESS                                                                     OWNER_GIVNAME        OWNER_FAMNAME        MAINT_DESC                                         MAINT_COST
+---------- --------- -------------------------------------------------------------------------------- -------------------- -------------------- -------------------------------------------------- ----------
+         9 07/OCT/22 284 Princes Highway, Unit 1, 6856, South Annashire, Victoria                     Lilian               Potter               Front door lock replacement                              1275
+        12 07/NOV/22 284 Princes Highway, Unit 1, 6856, South Annashire, Victoria                     Geoffrey             Berth                Fly screen replacement for front and back doors          1275
+        12 07/NOV/22 284 Princes Highway, Unit 1, 6856, South Annashire, Victoria                     Lilian               Potter               Fly screen replacement for front and back doors          1275
+        12 07/NOV/22 284 Princes Highway, Unit 1, 6856, South Annashire, Victoria                     Joela                Boshers              Fly screen replacement for front and back doors          1275
+        12 07/NOV/22 284 Princes Highway, Unit 1, 6856, South Annashire, Victoria                     Jasun                Clitsome             Fly screen replacement for front and back doors          1275
+        12 07/NOV/22 284 Princes Highway, Unit 1, 6856, South Annashire, Victoria                     Ronald               Meere                Fly screen replacement for front and back doors          1275
+        12 07/NOV/22 284 Princes Highway, Unit 1, 6856, South Annashire, Victoria                     Ludovika             Wiggins              Fly screen replacement for front and back doors          1275
+         7 06/OCT/22 284 Princes Highway, Unit 1, 6856, South Annashire, Victoria                     Geoffrey             Berth                Painting living room walls, 30m2                         1000
+         7 06/OCT/22 284 Princes Highway, Unit 1, 6856, South Annashire, Victoria                     Lilian               Potter               Painting living room walls, 30m2                         1000
+         7 06/OCT/22 284 Princes Highway, Unit 1, 6856, South Annashire, Victoria                     Joela                Boshers              Painting living room walls, 30m2                         1000
+         7 06/OCT/22 284 Princes Highway, Unit 1, 6856, South Annashire, Victoria                     Ludovika             Wiggins              Painting living room walls, 30m2                         1000
+
+  MAINT_ID MAINT_DAT PROP_ADDRESS                                                                     OWNER_GIVNAME        OWNER_FAMNAME        MAINT_DESC                                         MAINT_COST
+---------- --------- -------------------------------------------------------------------------------- -------------------- -------------------- -------------------------------------------------- ----------
+         7 06/OCT/22 284 Princes Highway, Unit 1, 6856, South Annashire, Victoria                     Ronald               Meere                Painting living room walls, 30m2                         1000
+         7 06/OCT/22 284 Princes Highway, Unit 1, 6856, South Annashire, Victoria                     Jasun                Clitsome             Painting living room walls, 30m2                         1000
+        10 22/OCT/22 928 Olivia Crest, Apt. 293, 4328, Connellymouth, Queensland                      Ludovika             Wiggins              Cleaning the house roof                                  1000
+        10 22/OCT/22 928 Olivia Crest, Apt. 293, 4328, Connellymouth, Queensland                      Ronald               Meere                Cleaning the house roof                                  1000
+        10 22/OCT/22 928 Olivia Crest, Apt. 293, 4328, Connellymouth, Queensland                      Geoffrey             Berth                Cleaning the house roof                                  1000
+        10 22/OCT/22 928 Olivia Crest, Apt. 293, 4328, Connellymouth, Queensland                      Joela                Boshers              Cleaning the house roof                                  1000
+        10 22/OCT/22 928 Olivia Crest, Apt. 293, 4328, Connellymouth, Queensland                      Jasun                Clitsome             Cleaning the house roof                                  1000
+        10 22/OCT/22 928 Olivia Crest, Apt. 293, 4328, Connellymouth, Queensland                      Lilian               Potter               Cleaning the house roof                                  1000
+
+30 rows selected. 
+
+SQL> 
+SQL> /*2*/
+SQL> -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
+SQL> -- ENSURE that your query is formatted and has a semicolon
+SQL> -- (;) at the end of this answer
+SQL> /*
+SQL>SELECT 
+SQL>    rent_agreement_no, tenant_no, tenant_title, tenant_givname, tenant_famname, prop_address, owner_givname, rent_lease_period
+SQL>FROM
+SQL>    (rent.rent JOIN rent.tenant ON rent.tenant_no = tenant.tenant_no) JOIN (rent.property JOIN rent.owner ON property.owner_no = owner.owner_no) ON property.prop_no = rent.prop_no
+SQL>WHERE
+SQL>    rent_weekly_rate < 425
+SQL>ORDER BY
+SQL>    tenant_no;
+SQL>*/
+SQL> /*3*/
+SQL> -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
+SQL> -- ENSURE that your query is formatted and has a semicolon
+SQL> -- (;) at the end of this answer
+SQL> SELECT
+  2      tenant_no, tenant_title, tenant_givname, tenant_famname, dam_no, dam_cost
+  3  FROM
+  4      rent.tenant, rent.damage
+  5  WHERE
+  6      to_char(dam_datetime, 'dd-Mon-yyyy') LIKE '%2022'
+  7  ORDER BY
+  8      dam_cost DESC, tenant_no;
+
+ TENANT_NO TENAN TENANT_GIVNAME       TENANT_FAMNAME           DAM_NO   DAM_COST
+---------- ----- -------------------- -------------------- ---------- ----------
+      1068 Mrs   Haily                Cuardall                      6        900
+      1286 Ms    Dacey                Demchen                       6        900
+      1907 Ms    Nadia                Jerred                        6        900
+      2524 Mr    Rich                 Suggate                       6        900
+      2720 Ms    Patricia             Stroband                      6        900
+      4971 Mr    Gustie               Hugueville                    6        900
+      5518 Mrs   Diane                De Bruyne                     6        900
+      7150 Mrs   Aloin                Breakspear                    6        900
+      7634 Ms    Guenna               Walaron                       6        900
+      7764 Ms    Irving               Legister                      6        900
+      8836 Mr    Robinson             Elderbrant                    6        900
+
+ TENANT_NO TENAN TENANT_GIVNAME       TENANT_FAMNAME           DAM_NO   DAM_COST
+---------- ----- -------------------- -------------------- ---------- ----------
+      9147 Mr    Melly                Jerger                        6        900
+      1068 Mrs   Haily                Cuardall                      9        850
+      1286 Ms    Dacey                Demchen                       9        850
+      1907 Ms    Nadia                Jerred                        9        850
+      2524 Mr    Rich                 Suggate                       9        850
+      2720 Ms    Patricia             Stroband                      9        850
+      4971 Mr    Gustie               Hugueville                    9        850
+      5518 Mrs   Diane                De Bruyne                     9        850
+      7150 Mrs   Aloin                Breakspear                    9        850
+      7634 Ms    Guenna               Walaron                       9        850
+      7764 Ms    Irving               Legister                      9        850
+
+ TENANT_NO TENAN TENANT_GIVNAME       TENANT_FAMNAME           DAM_NO   DAM_COST
+---------- ----- -------------------- -------------------- ---------- ----------
+      8836 Mr    Robinson             Elderbrant                    9        850
+      9147 Mr    Melly                Jerger                        9        850
+      1068 Mrs   Haily                Cuardall                      8        800
+      1286 Ms    Dacey                Demchen                       8        800
+      1907 Ms    Nadia                Jerred                        8        800
+      2524 Mr    Rich                 Suggate                       8        800
+      2720 Ms    Patricia             Stroband                      8        800
+      4971 Mr    Gustie               Hugueville                    8        800
+      5518 Mrs   Diane                De Bruyne                     8        800
+      7150 Mrs   Aloin                Breakspear                    8        800
+      7634 Ms    Guenna               Walaron                       8        800
+
+ TENANT_NO TENAN TENANT_GIVNAME       TENANT_FAMNAME           DAM_NO   DAM_COST
+---------- ----- -------------------- -------------------- ---------- ----------
+      7764 Ms    Irving               Legister                      8        800
+      8836 Mr    Robinson             Elderbrant                    8        800
+      9147 Mr    Melly                Jerger                        8        800
+      1068 Mrs   Haily                Cuardall                      7        750
+      1286 Ms    Dacey                Demchen                       7        750
+      1907 Ms    Nadia                Jerred                        7        750
+      2524 Mr    Rich                 Suggate                       7        750
+      2720 Ms    Patricia             Stroband                      7        750
+      4971 Mr    Gustie               Hugueville                    7        750
+      5518 Mrs   Diane                De Bruyne                     7        750
+      7150 Mrs   Aloin                Breakspear                    7        750
+
+ TENANT_NO TENAN TENANT_GIVNAME       TENANT_FAMNAME           DAM_NO   DAM_COST
+---------- ----- -------------------- -------------------- ---------- ----------
+      7634 Ms    Guenna               Walaron                       7        750
+      7764 Ms    Irving               Legister                      7        750
+      8836 Mr    Robinson             Elderbrant                    7        750
+      9147 Mr    Melly                Jerger                        7        750
+      1068 Mrs   Haily                Cuardall                      4        500
+      1286 Ms    Dacey                Demchen                       4        500
+      1907 Ms    Nadia                Jerred                        4        500
+      2524 Mr    Rich                 Suggate                       4        500
+      2720 Ms    Patricia             Stroband                      4        500
+      4971 Mr    Gustie               Hugueville                    4        500
+      5518 Mrs   Diane                De Bruyne                     4        500
+
+ TENANT_NO TENAN TENANT_GIVNAME       TENANT_FAMNAME           DAM_NO   DAM_COST
+---------- ----- -------------------- -------------------- ---------- ----------
+      7150 Mrs   Aloin                Breakspear                    4        500
+      7634 Ms    Guenna               Walaron                       4        500
+      7764 Ms    Irving               Legister                      4        500
+      8836 Mr    Robinson             Elderbrant                    4        500
+      9147 Mr    Melly                Jerger                        4        500
+      1068 Mrs   Haily                Cuardall                      5        150
+      1286 Ms    Dacey                Demchen                       5        150
+      1907 Ms    Nadia                Jerred                        5        150
+      2524 Mr    Rich                 Suggate                       5        150
+      2720 Ms    Patricia             Stroband                      5        150
+      4971 Mr    Gustie               Hugueville                    5        150
+
+ TENANT_NO TENAN TENANT_GIVNAME       TENANT_FAMNAME           DAM_NO   DAM_COST
+---------- ----- -------------------- -------------------- ---------- ----------
+      5518 Mrs   Diane                De Bruyne                     5        150
+      7150 Mrs   Aloin                Breakspear                    5        150
+      7634 Ms    Guenna               Walaron                       5        150
+      7764 Ms    Irving               Legister                      5        150
+      8836 Mr    Robinson             Elderbrant                    5        150
+      9147 Mr    Melly                Jerger                        5        150
+
+72 rows selected. 
+
+SQL> 
+SQL> /*4*/
+SQL> -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
+SQL> -- ENSURE that your query is formatted and has a semicolon
+SQL> -- (;) at the end of this answer
+SQL> SELECT
+  2      tenant_no, tenant_title, tenant_givname, tenant_famname, prop_no, prop_address, COUNT(rent_agreement_no)
+  3  FROM
+  4      rent.tenant, rent.property
+  5  WHERE
+  6      UPPER(prop_address) LIKE '%TASMANIA'
+  7  ORDER BY
+  8      tenant_no;
+
+Error starting at line : 60 in command -
+SELECT
+    tenant_no, tenant_title, tenant_givname, tenant_famname, prop_no, prop_address, COUNT(rent_agreement_no)
+FROM
+    rent.tenant, rent.property
+WHERE
+    UPPER(prop_address) LIKE '%TASMANIA'
+ORDER BY
+    tenant_no
+Error at Command Line : 61 Column : 91
+Error report -
+SQL Error: ORA-00904: "RENT_AGREEMENT_NO": invalid identifier
+00904. 00000 -  "%s: invalid identifier"
+*Cause:    
+*Action:
+SQL> 
+SQL> --Comment out SET ECHO and SPOOL commands before submitting your portfolio
+SQL> SPOOL OFF
