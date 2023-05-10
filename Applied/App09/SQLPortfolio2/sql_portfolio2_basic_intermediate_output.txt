@@ -12,75 +12,101 @@ SQL> /*1*/
 SQL> -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
 SQL> -- ENSURE that your query is formatted and has a semicolon
 SQL> -- (;) at the end of this answer
-SQL> -- HOW TO PUT OWNER NAME TOGETHER
-SQL> -- MAINTANENCE DATE AND TIME
-SQL> /*
-SQL>SELECT
-SQL>    maint_id, maint_datetime, prop_address, owner_givname, owner_famname, maint_desc, maint_cost
-SQL>FROM
-SQL>    rent.property NATURAL JOIN rent.maintenance, rent.owner
-SQL>WHERE
-SQL>    maint_cost BETWEEN 1000 AND 3000 AND maint_assigned = 'Y'
-SQL>ORDER BY
-SQL>    maint_cost DESC, maint_datetime;
-SQL>*/
+SQL> 
+SQL> SELECT
+  2      maint_id, to_char(maint_datetime, 'dd-Mon-yyyy hh:mi:ss AM') as maint_date_and_time, prop_address, owner_givname||' '||owner_famname as Owner_Fullname, maint_desc, maint_cost
+  3  FROM
+  4      rent.property NATURAL JOIN rent.maintenance NATURAL JOIN rent.owner
+  5  WHERE
+  6      maint_cost BETWEEN 1000 AND 3000 AND UPPER(maint_assigned) = UPPER('Y')
+  7  ORDER BY
+  8      maint_cost DESC, maint_datetime DESC;
+
+  MAINT_ID MAINT_DATE_AND_TIME              PROP_ADDRESS                                                                     OWNER_FULLNAME                            MAINT_DESC                                         MAINT_COST
+---------- -------------------------------- -------------------------------------------------------------------------------- ----------------------------------------- -------------------------------------------------- ----------
+         1 06-Dec-2019 08:45:00 AM          22 Benjamin Track, Suite 722, 8157, Koelpinmouth, Australian Capital Territory   Joela Boshers                             Painting interior walls, 100m2                           3000
+        12 07-Nov-2022 09:00:00 AM          284 Princes Highway, Unit 1, 6856, South Annashire, Victoria                     Ronald Meere                              Fly screen replacement for front and back doors          1275
+         9 07-Oct-2022 02:00:00 PM          284 Princes Highway, Unit 1, 6856, South Annashire, Victoria                     Ronald Meere                              Front door lock replacement                              1275
+        10 22-Oct-2022 01:00:00 PM          928 Olivia Crest, Apt. 293, 4328, Connellymouth, Queensland                      Ludovika Wiggins                          Cleaning the house roof                                  1000
+         7 06-Oct-2022 08:30:00 AM          284 Princes Highway, Unit 1, 6856, South Annashire, Victoria                     Ronald Meere                              Painting living room walls, 30m2                         1000
+
+SQL> 
 SQL> /*2*/
 SQL> -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
 SQL> -- ENSURE that your query is formatted and has a semicolon
 SQL> -- (;) at the end of this answer
 SQL> 
 SQL> SELECT 
-  2      rent_agreement_no, tenant_no, tenant_title, tenant_givname, tenant_famname, prop_address, owner_givname, rent_lease_period
+  2      r.rent_agreement_no, t.tenant_no, t.tenant_title||' '||t.tenant_givname||' '||tenant_famname as Tenant_Fullname, p.prop_address, o.owner_givname||' '||o.owner_famname as Owner_Fullname, CONCAT(r.rent_lease_period, ' months') as rent_lease_period
   3  FROM
   4      rent.tenant t JOIN rent.rent r ON t.tenant_no = r.tenant_no JOIN rent.property p ON r.prop_no = p.prop_no JOIN rent.owner o ON p.owner_no = o.owner_no
   5  WHERE
-  6      rent_weekly_rate < 425 AND to_char(rent_lease_start, 'YYYY') = '2022'
+  6      rent_weekly_rate < 425 AND to_char(rent_lease_start, 'YYYY') = '2022' AND rent_lease_period >= 6
   7  ORDER BY
-  8      rent_lease_period, tenant_no;
+  8      rent_lease_period DESC, tenant_no DESC;
 
-Error starting at line : 35 in command -
-SELECT 
-    rent_agreement_no, tenant_no, tenant_title, tenant_givname, tenant_famname, prop_address, owner_givname, rent_lease_period
-FROM
-    rent.tenant t JOIN rent.rent r ON t.tenant_no = r.tenant_no JOIN rent.property p ON r.prop_no = p.prop_no JOIN rent.owner o ON p.owner_no = o.owner_no
-WHERE
-    rent_weekly_rate < 425 AND to_char(rent_lease_start, 'YYYY') = '2022'
-ORDER BY
-    rent_lease_period, tenant_no
-Error at Command Line : 36 Column : 24
-Error report -
-SQL Error: ORA-00918: column ambiguously defined
-00918. 00000 -  "column ambiguously defined"
-*Cause:    
-*Action:
+RENT_AGREEMENT_NO  TENANT_NO TENANT_FULLNAME                                 PROP_ADDRESS                                                                     OWNER_FULLNAME                            RENT_LEASE_PERIOD                              
+----------------- ---------- ----------------------------------------------- -------------------------------------------------------------------------------- ----------------------------------------- -----------------------------------------------
+               24       2720 Ms Patricia Stroband                            531 Sienna Run, Suite 991, 6792, Boscoburgh, Queensland                          Ludovika Wiggins                          9 months                                       
+               25       1286 Ms Dacey Demchen                                928 Olivia Crest, Apt. 293, 4328, Connellymouth, Queensland                      Ludovika Wiggins                          9 months                                       
+               23       2524 Mr Rich Suggate                                 26 Hackett Knoll, Apt. 615, 6856, South Annashire, Victoria                      Ronald Meere                              6 months                                       
+
 SQL> 
 SQL> /*3*/
 SQL> -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
 SQL> -- ENSURE that your query is formatted and has a semicolon
 SQL> -- (;) at the end of this answer
-SQL> /*
-SQL>SELECT
-SQL>    tenant_no, tenant_title, tenant_givname, tenant_famname, COUNT(dam_no) AS no_of_damages, dam_cost
-SQL>FROM
-SQL>    rent.tenant, rent.damage
-SQL>WHERE
-SQL>    to_char(dam_datetime, 'YYYY') = '2022'
-SQL>ORDER BY
-SQL>    dam_cost DESC, tenant_no;
-SQL>*/
+SQL> 
+SQL> SELECT
+  2      t.tenant_no, t.tenant_title||' '||t.tenant_givname||' '||t.tenant_famname as tenant_name, COUNT(dam_no) as no_of_damages, CONCAT('$', to_char(dam_cost, '9999.99')) as total_dam_cost
+  3  FROM
+  4      rent.tenant t JOIN rent.rent r ON t.tenant_no = r.tenant_no JOIN rent.damage d ON r.rent_agreement_no = d.rent_agreement_no
+  5  WHERE
+  6      to_char(dam_datetime, 'YYYY') = '2022'
+  7  GROUP BY
+  8      t.tenant_no, t.tenant_title, t.tenant_givname, t.tenant_famname, d.dam_cost
+  9  ORDER BY
+ 10      dam_cost DESC, tenant_no;
+
+ TENANT_NO TENANT_NAME                                     NO_OF_DAMAGES TOTAL_DAM
+---------- ----------------------------------------------- ------------- ---------
+      2720 Ms Patricia Stroband                                        1 $  900.00
+      1286 Ms Dacey Demchen                                            1 $  850.00
+      1286 Ms Dacey Demchen                                            1 $  800.00
+      2720 Ms Patricia Stroband                                        1 $  750.00
+      2524 Mr Rich Suggate                                             1 $  500.00
+      4971 Mr Gustie Hugueville                                        1 $  150.00
+
+6 rows selected. 
+
+SQL> 
 SQL> /*4*/
 SQL> -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
 SQL> -- ENSURE that your query is formatted and has a semicolon
 SQL> -- (;) at the end of this answer
-SQL> /*
-SQL>SELECT
-SQL>    tenant_no, tenant_title, tenant_givname, tenant_famname, prop_no, prop_address, COUNT(rent_agreement_no)
-SQL>FROM
-SQL>    rent.tenant, rent.property
-SQL>WHERE
-SQL>    UPPER(prop_address) LIKE '%TASMANIA'
-SQL>ORDER BY
-SQL>    tenant_no;
-SQL>*/
+SQL> 
+SQL> SELECT
+  2      t.tenant_no, t.tenant_title||' '||t.tenant_givname||' '||t.tenant_famname as tenant_fullname, p.prop_no, p.prop_address, COUNT(rent_agreement_no) as no_of_rentals
+  3  FROM
+  4      rent.tenant t JOIN rent.rent r ON t.tenant_no = r.tenant_no JOIN rent.property p ON p.prop_no = r.prop_no
+  5  WHERE
+  6      UPPER(prop_address) LIKE '%TASMANIA'
+  7  GROUP BY
+  8      t.tenant_no, t.tenant_title, t.tenant_givname, t.tenant_famname, p.prop_no, p.prop_address
+  9  ORDER BY
+ 10      tenant_no;
+
+ TENANT_NO TENANT_FULLNAME                                    PROP_NO PROP_ADDRESS                                                                     NO_OF_RENTALS
+---------- ----------------------------------------------- ---------- -------------------------------------------------------------------------------- -------------
+      1068 Mrs Haily Cuardall                                    1984 30 Cox Street, Suite 036, 1100, Fadelland, Tasmania                                          2
+      1068 Mrs Haily Cuardall                                    2022 536 Emma Meadow, Suite 340, 9498, Woodland, Tasmania                                         1
+      1907 Ms Nadia Jerred                                       1984 30 Cox Street, Suite 036, 1100, Fadelland, Tasmania                                          1
+      1907 Ms Nadia Jerred                                       2022 536 Emma Meadow, Suite 340, 9498, Woodland, Tasmania                                         2
+      4971 Mr Gustie Hugueville                                  1965 4633 Leannon Crescent, Suite 962, 1791, Lake Evaside, Tasmania                               2
+      9147 Mr Melly Jerger                                       2117 9167 Heller Lane, Apt. 005, 3172, Alichester, Tasmania                                       3
+
+6 rows selected. 
+
+SQL> 
 SQL> --Comment out SET ECHO and SPOOL commands before submitting your portfolio
 SQL> SPOOL OFF
