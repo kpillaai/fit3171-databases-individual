@@ -25,7 +25,7 @@ SQL> create or replace trigger policy_check_trigger
  13      if :new.policy_type_code = 'C' and prop_furnished_id = 'N' then
  14          raise_application_error(-20000, 'Property must be fully furnished to buy Contents policy');
  15      end if;
- 16  
+ 16      /*
  17      select policy_enddate into policy_enddate_id
  18      from policy
  19      where prop_no = :new.prop_no and policy_type_code = :new.policy_type_code
@@ -36,7 +36,7 @@ SQL> create or replace trigger policy_check_trigger
  24      from policy
  25      where prop_no = :new.prop_no and policy_type_code = :new.policy_type_code
  26      order by policy_enddate desc;
- 27  
+ 27      */
  28      if policy_enddate_id < :new.policy_startdate and policy_counter > 0 then
  29          raise_application_error(-20001, 'Start date must be after previous end date');
  30      end if;
@@ -51,11 +51,7 @@ SQL>
 SQL> -- PLACE REQUIRED TRIGGER TEST HARNESS HERE
 SQL> -- before value
 SQL> select * from policy;
-
- POLICY_ID    PROP_NO POLICY_ST P POLICY_EN INS
----------- ---------- --------- - --------- ---
-        14       1965 11/JAN/22 C 12/JAN/22 LAS
-
+no rows selected
 SQL> 
 SQL> -- text for insert
 SQL> insert into policy (
@@ -74,24 +70,7 @@ SQL> insert into policy (
  14      'LAS'
  15  );
 
-Error starting at line : 57 in command -
-insert into policy (
-    policy_id,
-    prop_no,
-    policy_startdate,
-    policy_type_code,
-    policy_enddate,
-    insurer_code
-) values (
-    policy_seq.nextval, 
-    1965, 
-    to_date('11/JAN/2022', 'dd/MON/yyyy'), 
-    'C', 
-    to_date('12/JAN/2022', 'dd/MON/yyyy'), 
-    'LAS'
-)
-Error report -
-ORA-00001: unique constraint (KMAN0030.POLICY_NK) violated
+1 row inserted.
 
 SQL> 
 SQL> --after value
@@ -99,7 +78,7 @@ SQL> select * from policy;
 
  POLICY_ID    PROP_NO POLICY_ST P POLICY_EN INS
 ---------- ---------- --------- - --------- ---
-        14       1965 11/JAN/22 C 12/JAN/22 LAS
+        56       1965 11/JAN/22 C 12/JAN/22 LAS
 
 SQL> 
 SQL> -- test for insert (should raise error)
@@ -146,7 +125,7 @@ SQL> select * from policy;
 
  POLICY_ID    PROP_NO POLICY_ST P POLICY_EN INS
 ---------- ---------- --------- - --------- ---
-        14       1965 11/JAN/22 C 12/JAN/22 LAS
+        56       1965 11/JAN/22 C 12/JAN/22 LAS
 
 SQL> 
 SQL> -- delete
@@ -166,6 +145,7 @@ Rollback complete.
 
 SQL> 
 SQL> --End of Testing Harness
+SQL> 
 SQL> 
 SQL> --Comment out SET ECHO, SET SERVEROUTPUT and SPOOL commands before submitting your portfolio
 SQL> SPOOL OFF
