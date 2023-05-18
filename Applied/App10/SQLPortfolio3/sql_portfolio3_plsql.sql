@@ -20,7 +20,7 @@ for each row
 declare
     prop_furnished_id   property.prop_fully_furnished%type;
     policy_enddate_id   DATE;
-    policy_count        NUMBER;
+    policy_counter        NUMBER;
 begin
     select prop_fully_furnished into prop_furnished_id
     from property
@@ -29,22 +29,22 @@ begin
     if :new.policy_type_code = 'C' and prop_furnished_id = 'N' then
         raise_application_error(-20000, 'Property must be fully furnished to buy Contents policy');
     end if;
-    /*
+    
     select policy_enddate into policy_enddate_id
     from policy
     where prop_no = :new.prop_no and policy_type_code = :new.policy_type_code
     order by policy_enddate desc;
     
     select count(*)
-    into policy_count
+    into policy_counter
     from policy
     where prop_no = :new.prop_no and policy_type_code = :new.policy_type_code
     order by policy_enddate desc;
     
-    if policy_enddate_id < :new.policy_startdate and policy_count > 0 then
+    if policy_enddate_id < :new.policy_startdate and policy_counter > 0 then
         raise_application_error(-20001, 'Start date must be after previous end date');
     end if;
-    */
+    
 end;
 /
 

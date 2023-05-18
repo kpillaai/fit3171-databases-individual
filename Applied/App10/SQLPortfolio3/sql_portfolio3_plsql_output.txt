@@ -16,7 +16,7 @@ SQL> create or replace trigger policy_check_trigger
   4  declare
   5      prop_furnished_id   property.prop_fully_furnished%type;
   6      policy_enddate_id   DATE;
-  7      policy_count        NUMBER;
+  7      policy_counter        NUMBER;
   8  begin
   9      select prop_fully_furnished into prop_furnished_id
  10      from property
@@ -25,22 +25,22 @@ SQL> create or replace trigger policy_check_trigger
  13      if :new.policy_type_code = 'C' and prop_furnished_id = 'N' then
  14          raise_application_error(-20000, 'Property must be fully furnished to buy Contents policy');
  15      end if;
- 16      /*
+ 16  
  17      select policy_enddate into policy_enddate_id
  18      from policy
  19      where prop_no = :new.prop_no and policy_type_code = :new.policy_type_code
  20      order by policy_enddate desc;
  21  
  22      select count(*)
- 23      into policy_count
+ 23      into policy_counter
  24      from policy
  25      where prop_no = :new.prop_no and policy_type_code = :new.policy_type_code
  26      order by policy_enddate desc;
  27  
- 28      if policy_enddate_id < :new.policy_startdate and policy_count > 0 then
+ 28      if policy_enddate_id < :new.policy_startdate and policy_counter > 0 then
  29          raise_application_error(-20001, 'Start date must be after previous end date');
  30      end if;
- 31      */
+ 31  
  32  end;
  33  /
 
