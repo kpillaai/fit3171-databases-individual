@@ -66,19 +66,19 @@ ALTER TABLE booking ADD CONSTRAINT booking_nk UNIQUE ( booking_from, cabin_no, r
 
 -- CABIN
 CREATE TABLE cabin (
-    resort_id                   NUMBER(4),
-    cabin_no                    NUMBER(3),
-    cabin_nobedrooms            NUMBER(1),
-    cabin_sleeping_capacity     NUMBER(2),
-    cabin_bathroom_type         CHAR(1),
-    cabin_points_cost_day       NUMBER(4),
-    cabin_description            VARCHAR(250)
+    resort_id                   NUMBER(4) NOT NULL,
+    cabin_no                    NUMBER(3) NOT NULL,
+    cabin_nobedrooms            NUMBER(1) NOT NULL,
+    cabin_sleeping_capacity     NUMBER(2) NOT NULL,
+    cabin_bathroom_type         CHAR(1) NOT NULL,
+    cabin_points_cost_day       NUMBER(4) NOT NULL,
+    cabin_description           VARCHAR(250) NOT NULL
 );
 
 COMMENT ON COLUMN cabin.resort_id IS
     'Resort identifier for this booking';
 
-COMMENT ON COLUMN cabin.cabin_id IS
+COMMENT ON COLUMN cabin.cabin_no IS
     'Cabin number within the resort';
     
 COMMENT ON COLUMN cabin.cabin_nobedrooms IS
@@ -102,23 +102,23 @@ ALTER TABLE cabin ADD CONSTRAINT cabin_nobedrooms_between_1_and_4 CHECK (1 <= ca
 
 -- Add all missing FK Constraints below here
 ALTER TABLE booking
-    ADD CONSTRAINT member_booking FOREIGN KEY ( resort_id )
-        REFERENCES member ( resort_id );   --CHECK THIS ONE
+    ADD CONSTRAINT member_booking_fk FOREIGN KEY ( resort_id )
+        REFERENCES resort ( resort_id );   --CHECK THIS ONE
         
 ALTER TABLE booking
-    ADD CONSTRAINT member_booking FOREIGN KEY ( member_id )
+    ADD CONSTRAINT member_booking_fk FOREIGN KEY ( member_id ) 
         REFERENCES member ( member_id );
     
 ALTER TABLE booking
-    ADD CONSTRAINT cabin_booking FOREIGN KEY ( cabin_no )
-        REFERENCES cabin ( cabin_no );
+    ADD CONSTRAINT cabin_booking_fk FOREIGN KEY ( cabin_no )
+        REFERENCES cabin (cabin_no);
 
 ALTER TABLE booking
-    ADD CONSTRAINT staff_booking FOREIGN KEY ( staff_id )
+    ADD CONSTRAINT staff_booking_fk FOREIGN KEY ( staff_id )
         REFERENCES staff ( staff_id );
         
 ALTER TABLE cabin
-    ADD CONSTRAINT resort_cabin FOREIGN KEY (resort_id)
+    ADD CONSTRAINT resort_cabin_fk FOREIGN KEY (resort_id)
         REFERENCES resort (resort_id);
    
 
