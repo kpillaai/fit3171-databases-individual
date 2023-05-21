@@ -65,7 +65,40 @@ ALTER TABLE booking ADD CONSTRAINT booking_pk PRIMARY KEY ( booking_id );
 ALTER TABLE booking ADD CONSTRAINT booking_nk UNIQUE ( booking_from, cabin_no, resort_id );
 
 -- CABIN
+CREATE TABLE cabin (
+    resort_id                   NUMBER(4),
+    cabin_no                    NUMBER(3),
+    cabin_nobedrooms            NUMBER(1),
+    cabin_sleeping_capacity     NUMBER(2),
+    cabin_bathroom_type         CHAR(1),
+    cabin_points_cost_day       NUMBER(4),
+    cabin_description            VARCHAR(250)
+);
 
+COMMENT ON COLUMN cabin.resort_id IS
+    'Resort identifier for this booking';
+
+COMMENT ON COLUMN cabin.cabin_id IS
+    'Cabin number within the resort';
+    
+COMMENT ON COLUMN cabin.cabin_nobedrooms IS
+    'Number of bedrooms in cabin (between 1 and 4 bedrooms)';
+    
+COMMENT ON COLUMN cabin.cabin_sleeping_capacity IS
+    'Cabin sleeping capacity';
+    
+COMMENT ON COLUMN cabin.cabin_bathroom_type IS
+    'Type of cabin bathroom: I - Inside cabin bathroom, C - outside common bathroom';
+    
+COMMENT ON COLUMN cabin.cabin_points_cost_day IS
+    'Number of members points the cabin costs per day';
+    
+COMMENT ON COLUMN cabin.cabin_description IS
+    'Cabin description';
+    
+ALTER TABLE cabin ADD CONSTRAINT cabin_pk PRIMARY KEY (cabin_no, resort_id);
+
+ALTER TABLE cabin ADD CONSTRAINT cabin_nobedrooms_between_1_and_4 CHECK (1 <= cabin_nobedrooms AND cabin_nobedrooms <= 4);
 
 -- Add all missing FK Constraints below here
 ALTER TABLE booking
@@ -83,6 +116,10 @@ ALTER TABLE booking
 ALTER TABLE booking
     ADD CONSTRAINT staff_booking FOREIGN KEY ( staff_id )
         REFERENCES staff ( staff_id );
+        
+ALTER TABLE cabin
+    ADD CONSTRAINT resort_cabin FOREIGN KEY (resort_id)
+        REFERENCES resort (resort_id);
    
 
 --**Trigger for checking and updating member.member_points for each booking.**--
