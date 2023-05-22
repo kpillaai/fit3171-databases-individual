@@ -1,10 +1,10 @@
 /*****PLEASE ENTER YOUR DETAILS BELOW*****/
 --T2-tsa-insert.sql
 
---Student ID:
---Student Name:
---Unit Code:
---Applied Class No:
+--Student ID: 31500153
+--Student Name: Krishna Pillaai Manogaran
+--Unit Code:FIT3171
+--Applied Class No: 3
 
 /* Comments for your marker:
 
