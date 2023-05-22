@@ -102,16 +102,12 @@ ALTER TABLE cabin ADD CONSTRAINT cabin_nobedrooms_between_1_and_4 CHECK (1 <= ca
 
 -- Add all missing FK Constraints below here
 ALTER TABLE booking
-    ADD CONSTRAINT member_booking_fk FOREIGN KEY ( resort_id )
-        REFERENCES resort ( resort_id );   --CHECK THIS ONE
-        
+    ADD CONSTRAINT member_booking_fk FOREIGN KEY (member_id)
+        REFERENCES member (member_id);
+
 ALTER TABLE booking
-    ADD CONSTRAINT member_booking_fk FOREIGN KEY ( member_id ) 
-        REFERENCES member ( member_id );
-    
-ALTER TABLE booking
-    ADD CONSTRAINT cabin_booking_fk FOREIGN KEY ( cabin_no )
-        REFERENCES cabin (cabin_no);
+    ADD CONSTRAINT cabin_booking_fk FOREIGN KEY (cabin_no, resort_id)
+        REFERENCES cabin (cabin_no, resort_id);
 
 ALTER TABLE booking
     ADD CONSTRAINT staff_booking_fk FOREIGN KEY ( staff_id )
