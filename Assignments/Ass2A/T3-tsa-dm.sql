@@ -53,6 +53,42 @@ INSERT INTO cabin (
 );
 
 --3(c)
+/*
+INSERT INTO booking (
+    booking_id,
+    resort_id,
+    cabin_no,
+    booking_from,
+    booking_to,
+    booking_noadults,
+    booking_nochildren,
+    booking_total_points_cost,
+    member_id,
+    staff_id
+) VALUES (
+    booking_seq.NEXTVAL,
+    4,
+    4,      --cabin_no CHANGE
+    TO_DATE('26/05/2023', 'dd/mm/yyyy'),
+    TO_DATE('28/05/2023', 'dd/mm/yyyy'),
+    4,
+    4,
+    10,     --booking_total_points_cost CHANGE
+    (SELECT member_id FROM member WHERE member.member_no = 2 AND member.resort_id = 9),
+    (SELECT staff_id FROM staff WHERE staff.staff_phone = '0493427245')
+);
+*/
+
+
+--SELECT * FROM member WHERE member.member_id = 18;
+
+--SELECT * FROM staff WHERE staff.staff_id = 8;
+
+    
+    
+
+    
+
 
 
 --3(d)
