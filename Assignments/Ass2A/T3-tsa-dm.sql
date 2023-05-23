@@ -53,7 +53,6 @@ INSERT INTO cabin (
 );
 
 --3(c)
-/*
 INSERT INTO booking (
     booking_id,
     resort_id,
@@ -67,31 +66,66 @@ INSERT INTO booking (
     staff_id
 ) VALUES (
     booking_seq.NEXTVAL,
+    (
+        SELECT resort_id 
+        FROM resort 
+        WHERE LOWER(resort.resort_name) = LOWER('Awesome Resort') 
+        AND resort.town_id = (
+                SELECT town_id 
+                FROM town 
+                WHERE town.town_lat = -17.9644 AND town.town_long = 122.2304)
+    ),
     4,
-    4,      --cabin_no CHANGE
     TO_DATE('26/05/2023', 'dd/mm/yyyy'),
     TO_DATE('28/05/2023', 'dd/mm/yyyy'),
     4,
     4,
-    10,     --booking_total_points_cost CHANGE
+    (SELECT cabin_points_cost_day FROM cabin WHERE cabin.resort_id = (
+        SELECT resort_id 
+        FROM resort 
+        WHERE LOWER(resort.resort_name) = LOWER('Awesome Resort') 
+        AND resort.town_id = (
+                SELECT town_id 
+                FROM town 
+                WHERE town.town_lat = -17.9644 AND town.town_long = 122.2304)
+    ) AND cabin.cabin_no = 4) * (TO_DATE('28/05/2023', 'dd/mm/yyyy') - TO_DATE('26/05/2023', 'dd/mm/yyyy')),
     (SELECT member_id FROM member WHERE member.member_no = 2 AND member.resort_id = 9),
     (SELECT staff_id FROM staff WHERE staff.staff_phone = '0493427245')
 );
-*/
-
-
---SELECT * FROM member WHERE member.member_id = 18;
-
---SELECT * FROM staff WHERE staff.staff_id = 8;
-
-    
-    
-
-    
-
-
 
 --3(d)
-
+UPDATE booking 
+SET booking_to = TO_DATE('29/05/2023', 'dd/mm/yyyy') 
+WHERE booking.resort_id = (
+        SELECT resort_id 
+        FROM resort 
+        WHERE LOWER(resort.resort_name) = LOWER('Awesome Resort') 
+        AND resort.town_id = (
+                SELECT town_id 
+                FROM town 
+                WHERE town.town_lat = -17.9644 AND town.town_long = 122.2304)
+    ) 
+AND booking.cabin_no = 4 
+AND booking_from = TO_DATE('26/05/2023', 'dd/mm/yyyy');
 
 --3(e)
+DELETE FROM booking WHERE booking.resort_id = (
+        SELECT resort_id 
+        FROM resort 
+        WHERE LOWER(resort.resort_name) = LOWER('Awesome Resort') 
+        AND resort.town_id = (
+                SELECT town_id 
+                FROM town 
+                WHERE town.town_lat = -17.9644 AND town.town_long = 122.2304)
+    ) AND booking.cabin_no = 4;
+    
+DELETE FROM cabin WHERE cabin.resort_id = (
+        SELECT resort_id 
+        FROM resort 
+        WHERE LOWER(resort.resort_name) = LOWER('Awesome Resort') 
+        AND resort.town_id = (
+                SELECT town_id 
+                FROM town 
+                WHERE town.town_lat = -17.9644 AND town.town_long = 122.2304)
+    ) AND cabin.cabin_no = 4;
+
