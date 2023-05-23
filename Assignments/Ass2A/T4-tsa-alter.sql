@@ -97,6 +97,18 @@ CREATE TABLE cleaning(
     cleaning_date       DATE
 );
 
+COMMENT ON COLUMN cleaning.cleaning_id IS
+    'Cleaning session unique identifier';
+    
+COMMENT ON COLUMN cleaning.resort_id IS
+    'Resort identifier for this clean';
+
+COMMENT ON COLUMN cleaning.cabin_no IS
+    'Cabin number within the resort';
+    
+COMMENT ON COLUMN cleaning.cleaning_date IS
+    'Date of cleaning';
+
 ALTER TABLE cleaning ADD CONSTRAINT cleaning_pk PRIMARY KEY (cleaning_id);
 
 
@@ -107,6 +119,21 @@ CREATE TABLE cleaner(
     cleaner_starttime      DATE,
     cleaner_endtime        DATE
 );
+
+COMMENT ON COLUMN cleaner.cleaning_id IS
+    'Cleaning session unique identifier';
+    
+COMMENT ON COLUMN cleaner.staff_id IS
+    'Staff identifier';
+    
+COMMENT ON COLUMN cleaner.role_id IS
+    'Staff role identifier';
+    
+COMMENT ON COLUMN cleaner.cleaner_starttime IS
+    'Cleaner start time';
+
+COMMENT ON COLUMN cleaner.cleaner_endtime IS
+    'Cleaner end time';
 
 ALTER TABLE cleaner ADD CONSTRAINT cleaner_pk PRIMARY KEY (cleaning_id, staff_id);
 
@@ -122,33 +149,16 @@ ALTER TABLE cleaner
         REFERENCES cleaning (cleaning_id);
 
 ALTER TABLE cleaner
-    ADD CONSTRAINT cleaner_staff_fk FOREIGN KEY (staff_id, role_id)
-        REFERENCES staff (staff_id, role_id);
+    ADD CONSTRAINT cleaner_staff_fk FOREIGN KEY (staff_id)
+        REFERENCES staff (staff_id);
 
+ALTER TABLE cleaner
+    ADD CONSTRAINT cleaner_role_fk FOREIGN KEY (role_id)
+        REFERENCES role (role_id);
 
+DESC cleaning;
+DESC cleaner;
 
-
-
-
-/*
-COMMENT ON COLUMN cleaning.cleaning_id IS
-    'Cleaning session unique identifier';
-    
-COMMENT ON COLUMN cleaning.resort_id IS
-    'Resort identifier for this clean';
-
-COMMENT ON COLUMN cleaning.cabin_no IS
-    'Cabin number within the resort';
-    
-COMMENT ON COLUMN cleaning_id.staff_id IS
-    'Staff identifier';
-    
-COMMENT ON COLUMN cleaning_id.cleaning_starttime IS
-    'Cleaning start time';
-    
-COMMENT ON COLUMN cleaning_id.cleaning_endtime IS
-    'Cleaning end time';
-*/
 
 
 
