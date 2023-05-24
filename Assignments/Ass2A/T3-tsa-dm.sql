@@ -52,6 +52,8 @@ INSERT INTO cabin (
     '4 Bedroom 10 Person cabin'
 );
 
+COMMIT;
+
 --3(c)
 INSERT INTO booking (
     booking_id,
@@ -93,6 +95,8 @@ INSERT INTO booking (
     (SELECT staff_id FROM staff WHERE staff.staff_phone = '0493427245')
 );
 
+COMMIT;
+
 --3(d)
 UPDATE booking 
 SET booking_to = TO_DATE('29/05/2023', 'dd/mm/yyyy') 
@@ -128,4 +132,6 @@ DELETE FROM cabin WHERE cabin.resort_id = (
                 FROM town 
                 WHERE town.town_lat = -17.9644 AND town.town_long = 122.2304)
     ) AND cabin.cabin_no = 4;
+    
+COMMIT;
 

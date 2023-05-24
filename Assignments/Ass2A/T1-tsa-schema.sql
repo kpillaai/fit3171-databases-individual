@@ -1,10 +1,10 @@
 --*****PLEASE ENTER YOUR DETAILS BELOW*****
 --T1-tsa-schema.sql
 
---Student ID:
---Student Name:
---Unit Code:
---Applied Class No:
+--Student ID: 31500153
+--Student Name: Krishna Pillaai Manogaran
+--Unit Code: FIT3171
+--Applied Class No: 3
 
 /* Comments for your marker:
 
@@ -99,6 +99,8 @@ COMMENT ON COLUMN cabin.cabin_description IS
 ALTER TABLE cabin ADD CONSTRAINT cabin_pk PRIMARY KEY (cabin_no, resort_id);
 
 ALTER TABLE cabin ADD CONSTRAINT cabin_nobedrooms_between_1_and_4 CHECK (1 <= cabin_nobedrooms AND cabin_nobedrooms <= 4);
+
+ALTER TABLE cabin ADD CONSTRAINT cabin_bathroom_check CHECK (cabin_bathroom_type IN ('I', 'C'));
 
 -- Add all missing FK Constraints below here
 ALTER TABLE booking

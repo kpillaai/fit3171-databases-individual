@@ -222,6 +222,8 @@ INSERT INTO cabin VALUES (
     'Single person cabin'           --cabin_description
 );
 
+COMMIT;
+
 --------------------------------------
 --INSERT INTO booking
 --------------------------------------
@@ -487,6 +489,8 @@ INSERT INTO booking VALUES (
     17,          --member_id
     1           --staff_id
 );
+
+COMMIT;
 
 
 
