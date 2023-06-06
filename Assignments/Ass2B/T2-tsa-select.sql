@@ -151,7 +151,6 @@ ORDER BY
 
 
 
-
 /*2(e)*/
 -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
 -- ENSURE that your query is formatted and has a semicolon

@@ -21,37 +21,36 @@
 SET PAGESIZE 300
 
 SELECT
-    JSON_OBJECT ( '_id' VALUE stuid, 'name' VALUE stufname
+    JSON_OBJECT ( '_id' VALUE town_id, 'name' VALUE town_name
                 || ' '
-                || stulname,
+                || town_state,
                 'location' VALUE JSON_OBJECT (
-                                'latitude' VALUE stuaddress,
-                                'longitude' VALUE stuemail ),
+                                'latitude' VALUE town_lat,
+                                'longitude' VALUE town_long ),
                 'avg_temperature' VALUE JSON_OBJECT (
-                                'summer' VALUE stuaddress,
-                                'winter' VALUE stuemail ),
-                'dob' VALUE to_char(studob, 'dd-mm-yyyy'),
-                'no_of_resorts' VALUE stuid,
+                                'summer' VALUE town_avg_summer_temp,
+                                'winter' VALUE town_avg_winter_temp ),
+                'no_of_resorts' VALUE COUNT(resort_id),
                 'resorts' VALUE JSON_ARRAYAGG(
-                                JSON_OBJECT('id' VALUE unitcode,
-                                'name' VALUE unitname,
-                                'address' VALUE enrolmark,
-                                'phone' VALUE ofsemester,
-                                'year_built' VALUE to_char(ofyear, 'yyyy'),
-                                'company_name' VALUE enrolgrade))
+                                JSON_OBJECT('id' VALUE resort_id,
+                                'name' VALUE resort_name,
+                                'address' VALUE resort_street_address,
+                                'phone' VALUE resort_phone,
+                                'year_built' VALUE to_char(resort_yr_built_purch, 'yyyy'),
+                                'company_name' VALUE company_name))
     FORMAT JSON )
     || ','
 FROM
-    uni.student
-    NATURAL JOIN uni.enrolment
-    NATURAL JOIN uni.unit
+    tsa.town
+    NATURAL JOIN tsa.resort
+    NATURAL JOIN tsa.company
 GROUP BY
-    stuid,
-    stufname,
-    stulname,
-    stuaddress,
-    stuphone,
-    stuemail,
-    studob
+    town_id,
+    town_name,
+    town_state,
+    town_lat,
+    town_long,
+    town_avg_summer_temp,
+    town_avg_winter_temp   
 ORDER BY
-    stuid;
+    town_id;
