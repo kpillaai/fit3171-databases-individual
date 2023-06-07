@@ -1,4 +1,4 @@
---*****PLEASE ENTER YOUR DETAILS BELOW*****
+x--*****PLEASE ENTER YOUR DETAILS BELOW*****
 --T4-tsa-plsql.sql
 
 --Student ID:
@@ -14,7 +14,10 @@ SET SERVEROUTPUT ON
 
 --4(a) 
 -- Create a sequence for REVIEW PK
+DROP SEQUENCE review_id_seq;
 
+CREATE SEQUENCE review_id_seq
+    START WITH 100 INCREMENT BY 10;
 
 -- Complete the procedure below
 CREATE OR REPLACE PROCEDURE prc_insert_review (

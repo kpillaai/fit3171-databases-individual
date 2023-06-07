@@ -146,37 +146,33 @@ ORDER BY
 -- ENSURE that your query is formatted and has a semicolon
 -- (;) at the end of this answer
 SELECT
-    resort_id,
-    resort_name,
-    member_no,
-    member_gname
+    r.resort_id,
+    r.resort_name,
+    m.member_no,
+    m.member_gname
     || ' '
-    || member_fname as member_name,
-    member_date_joined as date_joined,
-    (SELECT
-        member_no
-        || ' '
-        || member_gname
-        || ' '
-        || member_fname
-    FROM
-        tsa.member
-    WHERE
-        member_id = member_id_recby
-    ) as recommended_by_details,
-    mc_total
+    || m.member_fname as member_name,
+    m.member_date_joined as date_joined,
+    m2.member_no
+    || ' '
+    || m2.member_gname
+    || ' '
+    || m2.member_fname as recommended_by_details,
+    mc.mc_total
 FROM
-    tsa.member
-    NATURAL JOIN tsa.resort
-    NATURAL JOIN tsa.town
-    NATURAL JOIN tsa.member_charge
+    tsa.member m
+    JOIN tsa.resort r ON m.resort_id = r.resort_id
+    JOIN tsa.town t ON t.town_id = r.town_id
+    JOIN tsa.member_charge mc ON m.member_id = mc.member_id
+    JOIN tsa.member m2 ON m.member_id_recby = m2.member_id
 WHERE
-    town_name != 'Byron Bay' 
-    AND town_state != 'NSW'
-    AND member_id_recby IS NOT NULL
+    t.town_name != 'Byron Bay' AND
+    t.town_state != 'NSW' AND
+    m.member_id_recby IS NOT NULL AND
+    mc.mc_total < (SELECT AVG(mc_total) FROM tsa.member_charge WHERE m.member_id = member_id)
 ORDER BY
-    resort_id,
-    member_no;
+    r.resort_id,
+    m.member_no;
     
 /*2(f)*/
 -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
