@@ -1,10 +1,10 @@
 --*****PLEASE ENTER YOUR DETAILS BELOW*****
 --T3-tsa-json.sql
 
---Student ID:
---Student Name:
---Unit Code:
---Applied Class No:
+--Student ID: 31500153
+--Student Name: Krishna Pillaai Manogaran
+--Unit Code: FIT3171
+--Applied Class No: 3
 
 /* Comments for your marker:
 
@@ -22,7 +22,7 @@ SET PAGESIZE 300
 
 SELECT
     JSON_OBJECT ( '_id' VALUE town_id, 'name' VALUE town_name
-                || ' '
+                || ', '
                 || town_state,
                 'location' VALUE JSON_OBJECT (
                                 'latitude' VALUE town_lat,

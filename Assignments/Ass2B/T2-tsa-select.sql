@@ -16,72 +16,58 @@
 /*2(a)*/
 -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
 -- ENSURE that your query is formatted and has a semicolon
--- (;) at the end of this answer
-SELECT t.town_id, t.town_name, pt.poi_type_id, pt.poi_type_descr, COUNT(*) AS poi_count
-FROM tsa.town t
-INNER JOIN tsa.point_of_interest poi ON t.town_id = poi.town_id
-INNER JOIN tsa.poi_type pt ON poi.poi_type_id = pt.poi_type_id
-WHERE t.town_id IN (
-    SELECT town_id
-    FROM tsa.point_of_interest
-    GROUP BY town_id
-    HAVING COUNT(DISTINCT poi_type_id) > 1
-)
-GROUP BY t.town_id, t.town_name, pt.poi_type_id, pt.poi_type_descr
-HAVING COUNT(*) > 1
-ORDER BY t.town_id, pt.poi_type_descr;
-
-
+-- (;) at the end of this answer DONE
+SELECT
+    town_id,
+    town_name,
+    poi_type_id,
+    poi_type_descr,
+    COUNT(poi_type_id) AS poi_count
+FROM
+    tsa.town
+    NATURAL JOIN tsa.point_of_interest
+    NATURAL JOIN tsa.poi_type
+GROUP BY
+    town_id,
+    town_name,
+    poi_type_id,
+    poi_type_descr
+ORDER BY
+    town_id,
+    poi_type_descr;
 
 /*2(b)*/
 -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
 -- ENSURE that your query is formatted and has a semicolon
--- (;) at the end of this answer
-/*
+-- (;) at the end of this answer NOT DONE
 SELECT
-    m.member_id,
-    m.member_fname,
-    m.resort_id,
-    r.resort_name,
-    COUNT(*) AS recommendation_count
+    member_id,
+    member_gname
+    || ' '
+    || member_fname AS member_name,
+    resort_id,
+    resort_name,
+    COUNT(review_id) AS number_of_recommendations
 FROM
-    tsa.member m
-    JOIN tsa.resort r ON m.resort_id = r.resort_id
-WHERE
-    m.member_id IN (
-        SELECT
-            member_id_recby
-        FROM
-            tsa.member
-        GROUP BY
-            member_id_recby
-        HAVING
-            COUNT(*) = (
-                SELECT
-                    COUNT(*)
-                FROM
-                    tsa.member
-                GROUP BY
-                    member_id_recby
-                ORDER BY
-                    COUNT(*) DESC
-            )
-    )
+    tsa.member
+    NATURAL JOIN tsa.resort
+    NATURAL JOIN tsa.review
 GROUP BY
-    m.member_id,
-    m.member_fname,
-    m.resort_id,
-    r.resort_name
+    member_id,
+    member_gname
+    || ' '
+    || member_fname,
+    resort_id,
+    resort_name
 ORDER BY
-    m.resort_id,
-    m.member_id;
-*/
+    resort_id,
+    member_id;
 
-
+select * from tsa.member where member_id_recby = 2;
 /*2(c)*/
 -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
 -- ENSURE that your query is formatted and has a semicolon
--- (;) at the end of this answer
+-- (;) at the end of this answer DONE
 SELECT
     p.poi_id,
     p.poi_name,
@@ -95,7 +81,7 @@ SELECT
     END AS min_rating,
     CASE
         WHEN r.avg_rating IS NULL THEN 'NR'
-        ELSE TO_CHAR(ROUND(r.avg_rating, 2))
+        ELSE TO_CHAR(ROUND(r.avg_rating, 1))
     END AS avg_rating
 FROM
     tsa.point_of_interest p
@@ -109,7 +95,7 @@ LEFT OUTER JOIN (
         tsa.review
     GROUP BY
         poi_id
-) r ON p.poi_id = r.poi_id
+    ) r ON p.poi_id = r.poi_id
 ORDER BY
     p.poi_id;
 
@@ -118,36 +104,32 @@ ORDER BY
 -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
 -- ENSURE that your query is formatted and has a semicolon
 -- (;) at the end of this answer
--- NEED TO DO LOCATION
-/*
+-- NEED TO DO reviews percentage and left pad
 SELECT
-    p.poi_name,
-    pt.poi_type_descr,
-    t.town_name,
-    CONCAT('Lat: ', LPAD(t.town_lat, 11, ' ')) AS town_location,
-    COUNT(r.review_id) AS reviews_completed,
-    CASE
-        WHEN COUNT(r.review_id) = 0 THEN 'No reviews completed'
-        ELSE ROUND((COUNT(r.review_id) * 100.0) / total_reviews.total_count, 2)
-    END AS percent_of_reviews
+    poi_name,
+    poi_type_descr,
+    town_name,
+    'Lat: '
+    || ''
+    || town_lat
+    || ' Long: '
+    || town_long AS town_location,
+    COUNT(review_id) as reviews_completed
 FROM
-    tsa.point_of_interest p
-    JOIN tsa.poi_type pt ON p.poi_type_id = pt.poi_type_id
-    JOIN tsa.town t ON p.town_id = t.town_id
-    LEFT JOIN tsa.review r ON p.poi_id = r.poi_id
-    CROSS JOIN (SELECT COUNT(review_id) AS total_count FROM tsa.review) total_reviews
+    tsa.point_of_interest
+    NATURAL JOIN tsa.poi_type
+    NATURAL JOIN tsa.town
+    NATURAL JOIN tsa.review
 GROUP BY
-    p.poi_name,
-    pt.poi_type_descr,
-    t.town_name,
-    t.town_lat,
-    total_reviews.total_count
-ORDER BY
-    t.town_name,
-    reviews_completed DESC,
-    p.poi_name;
-
-*/
+    poi_name,
+    poi_type_descr,
+    town_name,
+    town_lat,
+    town_long
+ORDER BY 
+    town_name, 
+    reviews_completed,
+    poi_name;
 
 
 
@@ -155,8 +137,39 @@ ORDER BY
 -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
 -- ENSURE that your query is formatted and has a semicolon
 -- (;) at the end of this answer
-
-
+SELECT
+    resort_id,
+    resort_name,
+    member_no,
+    member_gname
+    || ' '
+    || member_fname as member_name,
+    member_date_joined as date_joined,
+    (SELECT
+        member_no
+        || ' '
+        || member_gname
+        || ' '
+        || member_fname
+    FROM
+        tsa.member
+    WHERE
+        member_id = member_id_recby
+    ) as recommended_by_details,
+    mc_total
+FROM
+    tsa.member
+    NATURAL JOIN tsa.resort
+    NATURAL JOIN tsa.town
+    NATURAL JOIN tsa.member_charge
+WHERE
+    town_name != 'Byron Bay' 
+    AND town_state != 'NSW'
+    AND member_id_recby IS NOT NULL
+ORDER BY
+    resort_id,
+    member_no;
+    
 
 /*2(f)*/
 -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
