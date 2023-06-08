@@ -16,8 +16,7 @@
 /*2(a)*/
 -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
 -- ENSURE that your query is formatted and has a semicolon
--- (;) at the end of this answer DONE
-/*
+-- (;) at the end of this answer
 SELECT
     town_id,
     town_name,
@@ -36,13 +35,11 @@ GROUP BY
 ORDER BY
     town_id,
     poi_type_descr;
-*/
 
 /*2(b)*/
 -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
 -- ENSURE that your query is formatted and has a semicolon
--- (;) at the end of this answer DONE
-/*
+-- (;) at the end of this answer
 SELECT
     m.member_id,
     m.member_gname
@@ -65,64 +62,59 @@ GROUP BY
 ORDER BY
     r.resort_id,
     m.member_id;
-*/
 
 /*2(c)*/
 -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
 -- ENSURE that your query is formatted and has a semicolon
--- (;) at the end of this answer DONE
-/*
+-- (;) at the end of this answer
 SELECT
     p.poi_id,
     p.poi_name,
     CASE
-        WHEN r.max_rating IS NULL THEN 'NR'
-        ELSE TO_CHAR(r.max_rating)
+        WHEN max_rating IS NULL THEN 'NR'
+        ELSE TO_CHAR(max_rating)
     END AS max_rating,
     CASE
-        WHEN r.min_rating IS NULL THEN 'NR'
-        ELSE TO_CHAR(r.min_rating)
+        WHEN min_rating IS NULL THEN 'NR'
+        ELSE TO_CHAR(min_rating)
     END AS min_rating,
     CASE
-        WHEN r.avg_rating IS NULL THEN 'NR'
-        ELSE TO_CHAR(ROUND(r.avg_rating, 1))
+        WHEN avg_rating IS NULL THEN 'NR'
+        ELSE RPAD(TO_CHAR(ROUND(avg_rating, 1), '9.9'), 20, ' ')
     END AS avg_rating
 FROM
     tsa.point_of_interest p
-LEFT OUTER JOIN (
-    SELECT
-        poi_id,
-        MAX(review_rating) AS max_rating,
-        MIN(review_rating) AS min_rating,
-        AVG(review_rating) AS avg_rating
-    FROM
-        tsa.review
-    GROUP BY
-        poi_id
-    ) r ON p.poi_id = r.poi_id
+    LEFT OUTER JOIN (
+        SELECT
+            poi_id,
+            MAX(review_rating) as max_rating,
+            MIN(review_rating) as min_rating,
+            AVG(review_rating) as avg_rating
+        FROM
+            tsa.review
+        GROUP BY
+            poi_id)
+    r ON p.poi_id = r.poi_id
 ORDER BY
     p.poi_id;
-*/
 
 /*2(d)*/
 -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
 -- ENSURE that your query is formatted and has a semicolon
 -- (;) at the end of this answer
--- NEED TO DO DECIMAL PLACES FOR LAT AND LONG OTHERWISE DONE
-/*
 SELECT
     p.poi_name,
     pt.poi_type_descr,
     t.town_name,
     LPAD('Lat: '
     || ''
-    || t.town_lat
+    || TO_CHAR(t.town_lat, '99.999999')
     || ' Long: '
-    || t.town_long, 35, ' ') AS town_location,
+    || TO_CHAR(t.town_long, '999.999999'), 35, ' ') AS town_location,
     COUNT(r.review_id) as reviews_completed,
     CASE
         WHEN COUNT(r.review_id) = 0 THEN 'No reviews completed'
-        ELSE TO_CHAR(ROUND((COUNT(r.review_id) * 100) / (SELECT COUNT(*) FROM tsa.review), 2))
+        ELSE TO_CHAR(ROUND((COUNT(r.review_id) * 100) / (SELECT COUNT(*) FROM tsa.review), 2)) || '%'
     END AS percent_of_reviews
 FROM
     tsa.point_of_interest p
@@ -139,14 +131,11 @@ ORDER BY
     t.town_name, 
     reviews_completed DESC,
     p.poi_name;
-*/
 
 /*2(e)*/
 -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
 -- ENSURE that your query is formatted and has a semicolon
 -- (;) at the end of this answer
--- NEED TO DO FORMATTING 
-/*
 SELECT
     r.resort_id,
     r.resort_name,
@@ -154,13 +143,13 @@ SELECT
     m.member_gname
     || ' '
     || m.member_fname as member_name,
-    m.member_date_joined as date_joined,
-    m2.member_no
+    RPAD(m.member_date_joined, 20, ' ') as date_joined,
+    RPAD(m2.member_no
     || ' '
     || m2.member_gname
     || ' '
-    || m2.member_fname as recommended_by_details,
-    '$' || mc.mc_total as total_charges
+    || m2.member_fname, 35, ' ') as recommended_by_details,
+    LPAD('$' || ROUND(mc.mc_total), 13, ' ') as total_charges
 FROM
     tsa.member m
     JOIN tsa.resort r ON m.resort_id = r.resort_id
@@ -180,19 +169,22 @@ WHERE
 ORDER BY
     r.resort_id,
     m.member_no;
-*/
+
 /*2(f)*/
 -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
 -- ENSURE that your query is formatted and has a semicolon
 -- (;) at the end of this answer
--- NEED TO DO FORMATTING
 SELECT
     r.resort_id,
     r.resort_name,
     p.poi_name,
     t.town_name AS poi_town,
-    t.town_state AS poi_state,
-    p.poi_open_time AS poi_opening_time,
+    RPAD(t.town_state, 10, ' ') AS poi_state,
+    CASE
+        WHEN p.poi_open_time IS NULL THEN 'Not Applicable'
+        WHEN TO_NUMBER(TO_CHAR(p.poi_open_time, 'HH24')) < 12 THEN RPAD(TO_CHAR(p.poi_open_time, 'HH12:MI') || 'AM', 20, ' ')
+        ELSE RPAD(TO_CHAR(p.poi_open_time, 'HH12:MI') || 'PM', 20, ' ')
+    END AS poi_opening_time,
     ROUND(geodistance(poit.town_lat, poit.town_long, t.town_lat, t.town_long),1) 
     || ' Kms' AS distance
 FROM
@@ -203,19 +195,6 @@ FROM
 ORDER BY
     r.resort_name,
     distance;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
