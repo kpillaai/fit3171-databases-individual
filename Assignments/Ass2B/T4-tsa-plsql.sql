@@ -65,11 +65,53 @@ END;
 /
 
 -- Write Test Harness for 4(a)
---Before insert
---SELECT * FROM tsa.review;
+--execute the procedure 
+DECLARE
+    output VARCHAR2(200);
+BEGIN
+    --call the procedure - invalid member_id
+    prc_insert_review(5000, 1, 'Good place', 3, output);
+    dbms_output.put_line(output);
+END;
+/
+
+--execute the procedure 
+DECLARE
+    output VARCHAR2(200);
+BEGIN
+    --call the procedure - invalid poi_id
+    prc_insert_review(1, 5000, 'Good place', 3, output);
+    dbms_output.put_line(output);
+END;
+/
+
+--execute the procedure 
+DECLARE
+    output VARCHAR2(200);
+BEGIN
+    --call the procedure - success
+    prc_insert_review(1, 1, 'Good place', 3, output);
+    dbms_output.put_line(output);
+END;
+/
 
 --4(b) 
 --Write your trigger statement, 
 --finish it with a slash(/) followed by a blank line
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -- Write Test Harness for 4(b)
+
