@@ -1,4 +1,4 @@
-x--*****PLEASE ENTER YOUR DETAILS BELOW*****
+--*****PLEASE ENTER YOUR DETAILS BELOW*****
 --T4-tsa-plsql.sql
 
 --Student ID:
@@ -27,13 +27,46 @@ CREATE OR REPLACE PROCEDURE prc_insert_review (
     p_review_rating  IN NUMBER,
     p_output         OUT VARCHAR2
 ) AS
+    p_member_id_found   NUMBER;
+    p_poi_id_found      NUMBER;
 BEGIN
+    SELECT
+        COUNT(*)
+    INTO 
+        p_member_id_found
+    FROM 
+        tsa.member
+    WHERE
+        member_id = p_member_id;
     
+    SELECT
+        COUNT(*)
+    INTO
+        p_poi_id_found
+    FROM
+        tsa.point_of_interest
+    WHERE
+        poi_id = p_poi_id;
+        
+    IF (p_member_id_found = 0) THEN
+        p_output := 'Invalid member id';
+    ELSE
+        
+        IF (p_poi_id_found = 0) THEN
+            p_output := 'Invalid POI id';
+        ELSE
+            INSERT INTO review VALUES (review_id_seq.NEXTVAL, p_member_id, sysdate, p_review_comment, p_review_rating, p_poi_id);
+            p_output := 'New review added';
+        END IF;
+    
+    END IF;
+
 END;
 /
 
 -- Write Test Harness for 4(a)
-
+--Before insert
+--SELECT * FROM tsa.review;
 
 --4(b) 
 --Write your trigger statement, 
