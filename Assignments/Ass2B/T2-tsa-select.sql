@@ -146,6 +146,7 @@ ORDER BY
 -- ENSURE that your query is formatted and has a semicolon
 -- (;) at the end of this answer
 -- NEED TO DO FORMATTING 
+/*
 SELECT
     r.resort_id,
     r.resort_name,
@@ -179,16 +180,42 @@ WHERE
 ORDER BY
     r.resort_id,
     m.member_no;
-    
-/*
-select * from tsa.member m
-    JOIN tsa.resort r ON m.resort_id = r.resort_id
-    JOIN tsa.town t ON t.town_id = r.town_id
-    JOIN tsa.member_charge mc ON m.member_id = mc.member_id
-    JOIN tsa.member m2 ON m.member_id_recby = m2.member_id where mc.mc_total < (SELECT AVG(mc_total) FROM tsa.member_charge WHERE member_id = m.member_id);
 */
 /*2(f)*/
 -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
 -- ENSURE that your query is formatted and has a semicolon
 -- (;) at the end of this answer
+-- NEED TO DO FORMATTING
+SELECT
+    r.resort_id,
+    r.resort_name,
+    p.poi_name,
+    t.town_name AS poi_town,
+    t.town_state AS poi_state,
+    p.poi_open_time AS poi_opening_time,
+    ROUND(geodistance(poit.town_lat, poit.town_long, t.town_lat, t.town_long),1) 
+    || ' Kms' AS distance
+FROM
+    tsa.town t
+    JOIN tsa.resort r ON r.town_id = t.town_id
+    JOIN tsa.town poit ON geodistance(t.town_lat, t.town_long, poit.town_lat, poit.town_long) <= 100
+    JOIN tsa.point_of_interest p ON p.town_id = poit.town_id
+ORDER BY
+    r.resort_name,
+    distance;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
