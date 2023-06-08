@@ -145,6 +145,7 @@ ORDER BY
 -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
 -- ENSURE that your query is formatted and has a semicolon
 -- (;) at the end of this answer
+-- NEED TO DO FORMATTING 
 SELECT
     r.resort_id,
     r.resort_name,
@@ -158,7 +159,7 @@ SELECT
     || m2.member_gname
     || ' '
     || m2.member_fname as recommended_by_details,
-    mc.mc_total
+    '$' || mc.mc_total as total_charges
 FROM
     tsa.member m
     JOIN tsa.resort r ON m.resort_id = r.resort_id
@@ -166,14 +167,26 @@ FROM
     JOIN tsa.member_charge mc ON m.member_id = mc.member_id
     JOIN tsa.member m2 ON m.member_id_recby = m2.member_id
 WHERE
-    t.town_name != 'Byron Bay' AND
-    t.town_state != 'NSW' AND
+    UPPER(t.town_name) != UPPER('Byron Bay') AND
+    UPPER(t.town_state) != UPPER('NSW') AND
     m.member_id_recby IS NOT NULL AND
-    mc.mc_total < (SELECT AVG(mc_total) FROM tsa.member_charge WHERE m.member_id = member_id)
+    mc.mc_total < (
+        SELECT 
+            AVG(mc2.mc_total) 
+        FROM 
+            tsa.member_charge mc2
+            JOIN tsa.member m2 ON m2.member_id = mc2.member_id)
 ORDER BY
     r.resort_id,
     m.member_no;
     
+/*
+select * from tsa.member m
+    JOIN tsa.resort r ON m.resort_id = r.resort_id
+    JOIN tsa.town t ON t.town_id = r.town_id
+    JOIN tsa.member_charge mc ON m.member_id = mc.member_id
+    JOIN tsa.member m2 ON m.member_id_recby = m2.member_id where mc.mc_total < (SELECT AVG(mc_total) FROM tsa.member_charge WHERE member_id = m.member_id);
+*/
 /*2(f)*/
 -- PLEASE PLACE REQUIRED SQL STATEMENT FOR THIS PART HERE
 -- ENSURE that your query is formatted and has a semicolon
